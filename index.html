@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Vendas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">VB</div>
+        <span>Vini BI</span>
+      </div>
+      <nav class="nav" id="nav">
+        <a href="#visao-geral" class="active">
+          <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zM13 3h8v5h-8zM13 10h8v11h-8zM3 13h8v8H3z"/></svg>
+          Visão geral
+        </a>
+        <a href="#filiais">
+          <svg viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9v2a3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1-3 3 3 3 0 0 1-3-3zM5 15h14v6H5z"/></svg>
+          Filiais
+        </a>
+        <a href="#categorias">
+          <svg viewBox="0 0 24 24"><path d="M11 2v10l7.5 7A10 10 0 1 1 11 2zM13 2a10 10 0 0 1 9 9h-9z"/></svg>
+          Categorias
+        </a>
+        <a href="#produtos">
+          <svg viewBox="0 0 24 24"><path d="M3 4h18v4H3zM4 10h16v10H4zM9 13h6v2H9z"/></svg>
+          Produtos
+        </a>
+        <a href="#estoque">
+          <svg viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7zM12 12l9-5M12 12v10M12 12L3 7"/></svg>
+          Estoque
+        </a>
+        <a href="#clientes">
+          <svg viewBox="0 0 24 24"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0zM17 11a3 3 0 1 0 0-6M18 14a5 5 0 0 1 4 7"/></svg>
+          Clientes
+        </a>
+        <a href="#tabela">
+          <svg viewBox="0 0 24 24"><path d="M3 4h18v16H3zM3 9h18M3 14h18M9 9v11"/></svg>
+          Tabela
+        </a>
+      </nav>
+      <div class="sidebar-foot">
+        <label class="btn-ghost" for="fileInputSide">
+          <svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg>
+          Trocar planilha
+        </label>
+        <input type="file" id="fileInputSide" accept=".xlsx,.xls" hidden>
+      </div>
+    </aside>
+
+    <!-- ===== Conteúdo ===== -->
+    <main class="main">
+      <header class="topbar" id="visao-geral">
+        <div>
+          <h1>Dashboard de Vendas</h1>
+          <p class="subtitle" id="subtitle">Carregando dados…</p>
+        </div>
+        <div class="filters" role="group" aria-label="Filtros">
+          <label class="select">
+            <span>Filial</span>
+            <select id="fFilial"><option value="">Todas</option></select>
+          </label>
+          <label class="select">
+            <span>Categoria</span>
+            <select id="fCategoria"><option value="">Todas</option></select>
+          </label>
+          <label class="select">
+            <span>Fornecedor</span>
+            <select id="fFornecedor"><option value="">Todos</option></select>
+          </label>
+          <button class="btn-clear" id="btnClear" type="button" disabled>Limpar</button>
+        </div>
+      </header>
+
+      <section class="grid">
+        <!-- Hero: faturamento líquido -->
+        <article class="card hero span-4">
+          <div class="card-head"><h2>Faturamento líquido</h2><span class="tag">com descontos</span></div>
+          <div class="hero-card">
+            <span class="hero-label">Total</span>
+            <strong class="hero-value" id="kLiquido">R$ 0</strong>
+            <div class="hero-dots">•••• •••• •••• <span id="kVendasHero">0</span> vendas</div>
+            <div class="hero-foot">
+              <div><span class="hero-label">Período</span><b id="kPeriodo">—</b></div>
+              <div class="hero-coins"><i></i><i></i></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- KPIs -->
+        <article class="card span-8 kpis">
+          <div class="kpi"><span>Faturamento bruto</span><strong id="kBruto">—</strong><small>soma de Qtd × Valor</small></div>
+          <div class="kpi"><span>Descontos concedidos</span><strong id="kDesc" class="neg">—</strong><small id="kDescPct">—</small></div>
+          <div class="kpi"><span>Nº de vendas</span><strong id="kVendas">—</strong><small id="kClientes">—</small></div>
+          <div class="kpi"><span>Ticket médio</span><strong id="kTicket">—</strong><small>líquido por venda</small></div>
+          <div class="kpi"><span>Itens vendidos</span><strong id="kItens">—</strong><small id="kItensMedia">—</small></div>
+          <div class="kpi"><span>Estoque total</span><strong id="kEstoque">—</strong><small id="kEstoqueSub">—</small></div>
+        </article>
+
+        <!-- Filiais -->
+        <article class="card span-8" id="filiais">
+          <div class="card-head">
+            <h2>Faturamento líquido por filial</h2>
+            <span class="hint">clique numa barra para filtrar</span>
+          </div>
+          <div class="chart-box tall"><canvas id="chFilial" aria-label="Gráfico de barras do faturamento por filial" role="img"></canvas></div>
+        </article>
+
+        <!-- Desconto -->
+        <article class="card span-4">
+          <div class="card-head"><h2>Vendas com desconto</h2></div>
+          <div class="gauge-wrap">
+            <div class="gauge">
+              <canvas id="chGauge" aria-label="Percentual de vendas com desconto" role="img"></canvas>
+              <div class="gauge-center"><strong id="gPct">0%</strong></div>
+            </div>
+            <dl class="gauge-info">
+              <dt>Desconto médio</dt><dd id="gMedio">—</dd>
+              <dt>Total descontado</dt><dd id="gTotal">—</dd>
+            </dl>
+          </div>
+          <ul class="faixas" id="faixas"></ul>
+        </article>
+
+        <!-- Categorias -->
+        <article class="card span-4" id="categorias">
+          <div class="card-head"><h2>Por categoria</h2><span class="hint">clique para filtrar</span></div>
+          <div class="donut">
+            <canvas id="chCategoria" aria-label="Rosca do faturamento por categoria" role="img"></canvas>
+            <div class="donut-center"><small>Total</small><strong id="catTotal">—</strong></div>
+          </div>
+          <ul class="legend" id="catLegend"></ul>
+        </article>
+
+        <!-- Fornecedores -->
+        <article class="card span-4">
+          <div class="card-head"><h2>Por fornecedor</h2></div>
+          <div class="chart-box"><canvas id="chFornecedor" aria-label="Barras horizontais do faturamento por fornecedor" role="img"></canvas></div>
+        </article>
+
+        <!-- Top produtos -->
+        <article class="card span-4" id="produtos">
+          <div class="card-head"><h2>Top produtos</h2><span class="tag" id="topProdCount"></span></div>
+          <ul class="list" id="topProdutos"></ul>
+        </article>
+
+        <!-- Curva ABC -->
+        <article class="card span-8">
+          <div class="card-head">
+            <h2>Curva ABC de produtos</h2>
+            <div class="chips" id="abcChips"></div>
+          </div>
+          <div class="chart-box tall"><canvas id="chAbc" aria-label="Linha do faturamento acumulado por produto" role="img"></canvas></div>
+        </article>
+
+        <!-- Estoque crítico -->
+        <article class="card span-4" id="estoque">
+          <div class="card-head"><h2>Estoque crítico</h2><span class="tag">menores saldos</span></div>
+          <ul class="list stock" id="estoqueList"></ul>
+        </article>
+
+        <!-- Top clientes -->
+        <article class="card span-4" id="clientes">
+          <div class="card-head"><h2>Top clientes</h2></div>
+          <ul class="list" id="topClientes"></ul>
+        </article>
+
+        <!-- Tabela -->
+        <article class="card span-8" id="tabela">
+          <div class="card-head"><h2>Resumo por filial</h2><span class="hint">clique no cabeçalho para ordenar</span></div>
+          <div class="table-wrap">
+            <table class="table" id="tblFiliais">
+              <thead>
+                <tr>
+                  <th data-key="filial">Filial</th>
+                  <th data-key="cidade">Cidade</th>
+                  <th data-key="vendas" class="num">Vendas</th>
+                  <th data-key="itens" class="num">Itens</th>
+                  <th data-key="bruto" class="num">Bruto</th>
+                  <th data-key="desconto" class="num">Desconto</th>
+                  <th data-key="liquido" class="num">Líquido</th>
+                  <th data-key="ticket" class="num">Ticket</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <tfoot></tfoot>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <footer class="foot">Fonte: Base_Consolidada.xlsx · aba “Base-Consolidada”, “Estoque” e “Produtos”</footer>
+    </main>
+  </div>
+
+  <!-- ===== Carregamento / fallback ===== -->
+  <div class="overlay" id="overlay">
+    <div class="overlay-card">
+      <div class="spinner" id="spinner"></div>
+      <h3 id="overlayTitle">Carregando planilha…</h3>
+      <p id="overlayMsg">Lendo Base_Consolidada.xlsx</p>
+      <label class="dropzone" id="dropzone" hidden>
+        <input type="file" id="fileInput" accept=".xlsx,.xls" hidden>
+        <svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg>
+        <span>Arraste a <b>Base_Consolidada.xlsx</b> aqui<br>ou clique para selecionar</span>
+      </label>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
