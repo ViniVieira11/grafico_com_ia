@@ -1,6 +1,6 @@
 /* app.js — orquestra carregamento, estado dos filtros e renderização */
 (function (D) {
-  const DATA_URL = '../Base_Consolidada.xlsx';
+  const DATA_URL = 'data/Base_Consolidada.xlsx';
 
   const state = {
     db: null,
